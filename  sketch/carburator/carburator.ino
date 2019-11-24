@@ -33,6 +33,7 @@ unsigned long checkInterval = 3000; // инервал когда нужно зм
 void setup() {
   Serial.begin(9600);
   pinMode(modePin, INPUT);
+  setupRpm();             // теперь можно запрашивать обрты через переменную rpm
 }
 
 void loop() {    

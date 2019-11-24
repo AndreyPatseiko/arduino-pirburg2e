@@ -9,8 +9,8 @@ int enginWarmTemperature = 65;    // t - при которой полность�
 // Переменные для дросельной заслонки
 Servo chokeServo;                 // называем серво
 int chokePin = 10;                // пин подключения серво
-float minServoChokeDeg = 0;         // Воздушная заслонка - полностью открыта
-float maxServoChokeDeg = 45;        // Воздушная заслонка - польностью закрыта
+float minServoChokeDeg = 0;       // Воздушная заслонка - полностью открыта
+float maxServoChokeDeg = 45;      // Воздушная заслонка - польностью закрыта
 float chokeAngelForOneDegree = (maxServoChokeDeg / enginWarmTemperature); // угол одно градуса
 
 void controlChokeServo(bool setupMode, int temperature) {
@@ -28,6 +28,8 @@ void controlChokeServo(bool setupMode, int temperature) {
     else if (temperature > enginWarmTemperature && chokeServoAngle != minServoChokeDeg) {
       // все прогрелось
       runChokeServo(minServoChokeDeg);
+      delay(1000);
+      chokeServo.detach();
     }
   }
 }
@@ -45,10 +47,16 @@ int getChokeAngelFromDegree(int temperature) {
 };
 
 void runChokeServo(int angle) {
-  Serial.print("chokeServoAngle ");
+  Serial.print("input angle chokeServo ");
   Serial.println(angle);
-  chokeServo.write(angle);
+  if (angle >= minServoChokeDeg || angle <= maxServoChokeDeg) {
+    chokeServo.write(angle);
+  }
+  else if (angle < minServoChokeDeg) {
+    chokeServo.write(minServoChokeDeg);
+  }
+  else if (angle > maxServoChokeDeg) {
+    chokeServo.write(maxServoChokeDeg);
+  }
   chokeServo.attach(chokePin);
-  delay(500);
-  chokeServo.detach();
 }

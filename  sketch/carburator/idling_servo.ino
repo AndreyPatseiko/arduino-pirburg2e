@@ -1,6 +1,7 @@
 /*
   Привод ХХ
   Нужно подключить сервопривод и установить угол 90 - это будет нулевой точкой (уже прописано в setup: true)
+  хвоставик дожен касатся газового упора
   Диапазон регулировки от 180 до 15 градусов. Рабочий диапазон от 100 до 55.
   Если значяение меньше 55 то может проскочить через ограничитель!
 */
@@ -10,13 +11,13 @@ int enginWarmTemperatureForIdling = 45;  // t - при которой полно
 // Переменные для холостого хода
 Servo idlingServo;                  // называем серво
 int idlingPin = 9;                  // пин подключения серво
-int setupIdlingAngle = 90;          // угол для первоночальной установки
-float minIdlingServoDeg = 55;       // XX - максимальные прогревочные
-float maxIdlingServoDeg = 100;      // XX - прогревочные выключены
+int setupIdlingAngle = 105;         // угол для первоночальной установки 
+float minIdlingServoDeg = 65;       // XX - максимальные прогревочные
+float maxIdlingServoDeg = 105;      // XX - прогревочные выключены
 float idlingAngelForOneDegree = ((maxIdlingServoDeg - minIdlingServoDeg) / enginWarmTemperatureForIdling); // угол одно градуса
 
 void controlIdlingServo(bool setupMode, int temperature) {
-  float idlingServoAngle = idlingServo.read();
+  float idlingServoAngle = idlingServo.read();  
   if (setupMode) {
     if (idlingServoAngle != setupIdlingAngle) {
       // если initmode и угол не равен необходимому
@@ -46,9 +47,9 @@ int getIdlingAngelFromDegree(int temperature) {
   }
 };
 
-void runIdlingServo(int angle) {
+void runIdlingServo(int angle) {  
+  Serial.print("idlingServoAngle ");
+  Serial.println(angle);
   idlingServo.write(angle);
-  idlingServo.attach(idlingPin);
-  delay(500);
-  idlingServo.detach();
+  idlingServo.attach(idlingPin);  
 }

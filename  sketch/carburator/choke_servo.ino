@@ -45,6 +45,8 @@ int getChokeAngelFromDegree(int temperature) {
 };
 
 void runChokeServo(int angle) {
+  Serial.print("chokeServoAngle ");
+  Serial.println(angle);
   chokeServo.write(angle);
   chokeServo.attach(chokePin);
   delay(500);

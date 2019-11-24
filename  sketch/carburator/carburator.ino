@@ -20,13 +20,13 @@
    Расчет для параметров датчика температуры тазбит на два сегмента(для линейного подсчета)
    >5500 om - 1000om - прогрвается двигатель (t = -5 - +40 C)
    <1000 om - 120om - слегка прогрелся но еще не рабочая температура
-*/
+*/ 
 
 
-#define modePin 13         // переключатель в stupmode
+#define modePin 8           // переключатель в stupmode
 #include <Servo.h>          //используем библиотеку для работы с сервоприводом
 
-bool setupMode = false;     // режин настройки привода
+bool setupMode = false;    // режин настройки привода
 unsigned long timer = 0;
 unsigned long checkInterval = 3000; // инервал когда нужно змерять сопротивление и выполнить цикл, через каждые 15 сек;
 
@@ -35,11 +35,17 @@ void setup() {
   pinMode(modePin, INPUT);
 }
 
-void loop() {  
-  if(runFromDelay()){
-    setupMode = digitalRead(modePin);
+void loop() {    
+  if(runFromDelay()){    
+    setupMode = digitalRead(modePin);   
     float sensorOms = getOms();
     float temperature = omsToTemperature(sensorOms);
+    Serial.print("setupMode ");
+    Serial.print(setupMode);
+    Serial.print(" ;sensorOms ");
+    Serial.print(sensorOms);
+    Serial.print(" ;temperature ");
+    Serial.println(temperature);
     controlChokeServo(setupMode, temperature);
     controlIdlingServo(setupMode, temperature);
   }  

@@ -33,6 +33,8 @@ void controlIdlingServo(bool setupMode, int temperature) {
       runIdlingServo(maxIdlingServoDeg);
       delay(1000);
       idlingServo.detach();
+    } else {
+      idlingServo.detach();
     }
   }
 }

@@ -47,6 +47,7 @@ void loop() {
     Serial.print(sensorOms);
     Serial.print(" ;temperature ");
     Serial.println(temperature);
+    printRpm();
     controlChokeServo(setupMode, temperature);
     controlIdlingServo(setupMode, temperature);
   }  

@@ -7,7 +7,12 @@ void setupRpm() {
   attachInterrupt(0, RPM, FALLING);
 }
 
-void RPM () {
+void RPM() {
   rpm = (1000000.0 / (micros() - microsold)) * 60; // 1 гц = 60об/мин
   microsold = micros();
+}
+
+void printRpm() {
+  Serial.print("обороты: ");
+  Serial.println(rpm); // об/мин
 }

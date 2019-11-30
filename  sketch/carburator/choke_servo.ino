@@ -30,6 +30,8 @@ void controlChokeServo(bool setupMode, int temperature) {
       runChokeServo(minServoChokeDeg);
       delay(1000);
       chokeServo.detach();
+    } else {
+      chokeServo.detach();
     }
   }
 }

@@ -20,7 +20,7 @@
    Расчет для параметров датчика температуры тазбит на два сегмента(для линейного подсчета)
    >5500 om - 1000om - прогрвается двигатель (t = -5 - +40 C)
    <1000 om - 120om - слегка прогрелся но еще не рабочая температура
-*/ 
+*/
 
 
 #define modePin 8           // переключатель в stupmode
@@ -36,25 +36,25 @@ void setup() {
   setupRpm();             // теперь можно запрашивать обрты через переменную rpm
 }
 
-void loop() {    
-  if(runFromDelay()){    
-    setupMode = digitalRead(modePin);   
-    float sensorOms = getOms();
-    float temperature = omsToTemperature(sensorOms);
+void loop() {
+  float temperature = getTemperature();
+  if (runFromDelay()) {
+    setupMode = digitalRead(modePin);
+    if (temperature == -999) { // if temperature sensor not work
+      setupMode = true;
+    }
     Serial.print("setupMode ");
     Serial.print(setupMode);
-    Serial.print(" ;sensorOms ");
-    Serial.print(sensorOms);
     Serial.print(" ;temperature ");
     Serial.println(temperature);
-    printRpm();
+    //    printRpm(); // ptint rpm value
     controlChokeServo(setupMode, temperature);
     controlIdlingServo(setupMode, temperature);
-  }  
+  }
 }
 
-bool runFromDelay(){
-  if(millis() > timer + checkInterval){
+bool runFromDelay() {
+  if (millis() > timer + checkInterval) {
     timer = millis();
     return true;
   } else {
